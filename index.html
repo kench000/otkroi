@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Специальный сайт</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: white;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        #actionButton {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('button-image.jpg');
+            background-size: cover;
+            background-position: center;
+            border: none;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .fullscreen-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            z-index: 1;
+        }
+
+        /* Блокировка горизонтальной ориентации */
+        @media screen and (min-width: 500px) {
+            body::before {
+                content: "Пожалуйста, используйте сайт в вертикальной ориентации на телефоне!";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: white;
+                z-index: 9999;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+                text-align: center;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="actionButton"></button>
+    <img src="image.jpg" class="fullscreen-image" id="fullscreenImage">
+    <audio id="audioPlayer">
+        <source src="sound.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+
+    <script>
+        const actionButton = document.getElementById('actionButton');
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        function handleButtonClick() {
+            // Воспроизведение аудио
+            audioPlayer.play().catch(error => console.log('Автовоспроизведение заблокировано'));
+            
+            // Показ полноэкранного изображения
+            fullscreenImage.style.display = 'block';
+            
+            // Скрытие кнопки
+            actionButton.style.display = 'none';
+            
+            // Удаление обработчика события
+            actionButton.removeEventListener('click', handleButtonClick);
+        }
+
+        // Инициализация
+        actionButton.addEventListener('click', handleButtonClick);
+
+        // Блокировка масштабирования
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
